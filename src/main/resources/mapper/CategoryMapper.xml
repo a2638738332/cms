@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.briup.cms.dao.CategoryDao">
+
+    <resultMap id="categoryVoMap" type="com.briup.cms.domain.vo.CategoryVo">
+        <id property="id" column="id"></id>
+        <result property="name" column="name"></result>
+        <result property="description" column="description"></result>
+        <result property="orderNum" column="order_num"></result>
+        <collection property="categorys" resultMap="categoryMap"></collection>
+    </resultMap>
+    <resultMap id="categoryMap" type="com.briup.cms.domain.Category">
+        <id property="id" column="cid"></id>
+        <result property="name" column="cname"></result>
+        <result property="description" column="cdesc"></result>
+        <result property="orderNum" column="cnum"></result>
+        <result property="parentId" column="cpar_id"></result>
+    </resultMap>
+
+
+
+    <select id="query" resultMap="categoryVoMap">
+        SELECT c1.id,c1.name,c1.description,c1.order_num,
+               c2.id cid,c2.name cname,c2.description cdesc
+                ,c2.order_num cnum,c2.parent_id cpar_id
+        FROM cms_category c1
+                 LEFT JOIN cms_category c2
+                           ON c1.id = c2.parent_id
+        WHERE c1.parent_id is null
+    </select>
+</mapper>
