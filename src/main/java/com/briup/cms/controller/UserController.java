@@ -76,6 +76,7 @@ public class UserController {
     @PostMapping("/login")
     public Result login(String username,String password){
         String login = userService.login(username, password);
+        System.out.println("dev改动");
         return Result.success(login);
     }
 
